@@ -2,12 +2,13 @@ import csv
 import paramiko
 
 # Read data from CSV file
+
+
 def read_csv(file_path):
     with open(file_path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         data = [row for row in reader]
     return data
-
 
 
 try:
@@ -20,33 +21,34 @@ try:
         host = item["host"]
         ip = item["ip"]
 
-
         command = "help"
 
         username = "apc"
         password1 = "apc"
         password2 = "P@ss4apc"
-        
+
         if host is None or ip is None:
             continue
 
-        print(host, ip)
         client = paramiko.client.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         try:
-            client.connect(ip, username=username, password=password1, timeout=20)
+            client.connect(ip, username=username,
+                           password=password1, timeout=20)
         except Exception as e:
             print("Authentication failed, testing another password")
             try:
-                client.connect(ip, username=username, password=password2, timeout=20)
+                client.connect(ip, username=username,
+                               password=password2, timeout=20)
             except Exception as e:
-                print("Something went wrong: " + str(e))
+                print("Something went wrong: " + str(e) + "\n\n")
                 continue
 
         shell = client.invoke_shell()
         result = shell.recv(65535).decode('ascii')
 
         print("\n\n########## Configuring device: " + host)
+        print(host, ip)
         print("Done")
         # # Disable FTP
         # shell.send(bytes("ftp -S disable\n", 'ascii'))
@@ -91,4 +93,3 @@ try:
         client.close()
 except Exception as e:
     print("Something went wrong: " + str(e))
-
