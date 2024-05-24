@@ -23,7 +23,6 @@ try:
 
         command = "help"
 
-        ip = "10.136.60.2"
         username = "apc"
         password1 = "apc"
         password2 = "P@ss4apc"
@@ -31,14 +30,14 @@ try:
         if host is None or ip is None:
             continue
 
-
+        print(host, ip)
         client = paramiko.client.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         try:
-            client.connect(host, username=username, password=password1, timeout=20)
+            client.connect(ip, username=username, password=password1, timeout=20)
         except Exception as e:
             print("Authentication failed, testing another password")
-            client.connect(host, username=username, password=password2, timeout=20)
+            client.connect(ip, username=username, password=password2, timeout=20)
 
         shell = client.invoke_shell()
         result = shell.recv(65535).decode('ascii')
