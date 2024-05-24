@@ -37,7 +37,11 @@ try:
             client.connect(ip, username=username, password=password1, timeout=20)
         except Exception as e:
             print("Authentication failed, testing another password")
-            client.connect(ip, username=username, password=password2, timeout=20)
+            try:
+                client.connect(ip, username=username, password=password2, timeout=20)
+            except Exception as e:
+                print("Something went wrong: " + str(e))
+                continue
 
         shell = client.invoke_shell()
         result = shell.recv(65535).decode('ascii')
@@ -87,3 +91,4 @@ try:
         client.close()
 except Exception as e:
     print("Something went wrong: " + str(e))
+
