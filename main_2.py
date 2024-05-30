@@ -13,7 +13,7 @@ def read_csv(file_path):
 
 try:
     # CSV file path
-    csv_file = 'devices_test.csv'
+    csv_file = 'devices.csv'
 
     # Read data from CSV
     data = read_csv(csv_file)
@@ -62,7 +62,7 @@ try:
             # Disable admin user 
             shell.send(bytes("user -n admin -e disable\n", 'ascii'))
             result = shell.recv(65535).decode('ascii')
-            print("Admin user deleted")
+            print("Admin user disabled")
         except Exception as e:
             print("Something went wrong. Unable to delete admin user: " + str(e))
 
