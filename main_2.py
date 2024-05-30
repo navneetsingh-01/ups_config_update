@@ -52,7 +52,7 @@ try:
 
         try: 
             # Change super user password
-            shell.send(bytes("user -n apc -pw P@ss4apc\n", 'ascii'))
+            shell.send(bytes("user -n apc -cp apc -pw P@ss4apc\n", 'ascii'))
             result = shell.recv(65535).decode('ascii')
             print("SU password updated")
         except Exception as e:
