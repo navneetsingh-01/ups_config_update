@@ -50,21 +50,31 @@ try:
         print("\n\n########## Configuring device: " + host)
         print(host, ip)
 
-        try: 
-            # Change super user password
-            shell.send(bytes("user -n apc -cp apc -pw P@ss4apc\n", 'ascii'))
-            result = shell.recv(65535).decode('ascii')
-            print("SU password updated")
-        except Exception as e:
-            print("Something went wrong. Unable to change su password: " + str(e))
+        # try: 
+        #     # Change super user password
+        #     shell.send(bytes("user -n apc -cp apc -pw P@ss4apc\n", 'ascii'))
+        #     result = shell.recv(65535).decode('ascii')
+        #     print("SU password updated")
+        # except Exception as e:
+        #     print("Something went wrong. Unable to change su password: " + str(e))
+
+        # try:
+        #     # Disable admin user 
+        #     shell.send(bytes("user -n admin -e disable\n", 'ascii'))
+        #     result = shell.recv(65535).decode('ascii')
+        #     print("Admin user disabled")
+        # except Exception as e:
+        #     print("Something went wrong. Unable to delete admin user: " + str(e))
 
         try:
-            # Disable admin user 
-            shell.send(bytes("user -n admin -e disable\n", 'ascii'))
+            # Setup timezone to UTC
+            shell.send(bytes("date -z 00:00\n", 'ascii'))
             result = shell.recv(65535).decode('ascii')
-            print("Admin user disabled")
+            print("Timezone set to UTC")
         except Exception as e:
-            print("Something went wrong. Unable to delete admin user: " + str(e))
+            print("Something went wrong. Unable to set timezone: " + str(e))
+
+        
 
         # Reboot
         shell.send(bytes("reboot\n", 'ascii'))
