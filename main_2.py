@@ -59,7 +59,7 @@ try:
             print("Something went wrong. Unable to change su password: " + str(e))
 
         try:
-            # Delete admin user 
+            # Disable admin user 
             shell.send(bytes("user -n admin -e disable\n", 'ascii'))
             result = shell.recv(65535).decode('ascii')
             print("Admin user deleted")
