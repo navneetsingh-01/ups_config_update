@@ -13,7 +13,7 @@ def read_csv(file_path):
 
 try:
     # CSV file path
-    csv_file = 'devices.csv'
+    csv_file = 'devices_test.csv'
 
     # Read data from CSV
     data = read_csv(csv_file)
@@ -78,7 +78,8 @@ try:
         # Timezone by default GMT - Same time is displayed in UTC
 
         # Add an admin user
-        shell.send(bytes("user -n admin -pw Ups#123! -pe Administrator -e enable\n", 'ascii'))
+        shell.send(
+            bytes("user -n admin -pw Ups#123! -pe Administrator -e enable\n", 'ascii'))
         result = shell.recv(65535).decode('ascii')
         print("Admin user created")
 
