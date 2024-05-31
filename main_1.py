@@ -24,8 +24,8 @@ try:
         command = "help"
 
         username = "apc"
-        password1 = "apc"
-        password2 = "P@ss4apc"
+        password1 = "P@ss4apc"
+        password2 = "apc"
 
         if host is None or ip is None:
             continue
