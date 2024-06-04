@@ -29,6 +29,51 @@ class UPSConfig:
         self.shell.send(bytes("ntp -OM enabled\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
         print("NTP Enabled")
+    
+    def HTTP_config(self):
+        self.shell.send(bytes("web -h disable\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("HTTP Disabled")
+
+    def SSH_config(self):
+        self.shell.send(bytes("console -s\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("SSH Enabled")
+
+    def HTTPS_config(self):
+        self.shell.send(bytes("web -s enable\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("HTTPS Enabled")
+
+    def NTP_primary_server_config(self):
+        self.shell.send(bytes("ntp -p ntp.internal.salesforce.com\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("Primary NTP Server configured")
+
+    def NTP_secondary_server_config(self):
+        self.shell.send(bytes("ntp -s phx-ntp.internal.salesforce.com\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("Secondary NTP Server configured")
+
+    def create_user(self):
+        self.shell.send(bytes("user -n admin -pw Ups#123! -pe Administrator -e enable\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("Admin user created")
+
+    def setup_timezone(self):
+        self.shell.send(bytes("date -z 00:00\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("Timezone set to UTC")
+
+    def change_su_password(self):
+        self.shell.send(bytes("user -n apc -cp apc -pw P@ss4apc\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("SU password updated")
+
+    def user_disable(self):
+        self.shell.send(bytes("user -n admin -e disable\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("Admin user disabled")
 
     def reboot(self):
         self.shell.send(bytes("reboot\n", 'ascii'))
@@ -56,7 +101,10 @@ try:
 
         print("\n\n########## Configuring device: " + host + " - " + ip)
         config = UPSConfig(ip, username, [password1, password2])
-        configurations = [config.FTP_config, config.NTP_config, config.reboot]
+        configurations = [
+            config.FTP_config, 
+            config.reboot
+        ]
         for ups_config in configurations:
             try: 
                 ups_config()
@@ -64,56 +112,5 @@ try:
                 print(f"Something went wrong while executing {ups_config.__name__}: " + str(e))
 
         config.close_connection()
-
-        # client = paramiko.client.SSHClient()
-        # client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        # try:
-        #     client.connect(ip, username=username,
-        #                    password=password1, timeout=10)
-        # except Exception as e:
-        #     print("Authentication failed, testing another password")
-        #     try:
-        #         client.connect(ip, username=username,
-        #                        password=password2, timeout=10)
-        #     except Exception as e:
-        #         print("Something went wrong: " + str(e) + "\n\n")
-        #         continue
-
-        # shell = client.invoke_shell()
-        # result = shell.recv(65535).decode('ascii')
-
-       
-        # print(host, ip)
-       
-        # # Disable HTTP
-        # shell.send(bytes("web -h disable\n", 'ascii'))
-        # result = shell.recv(65535).decode('ascii')
-        # print("HTTP Disabled")
-        # # Enable SSH
-        # shell.send(bytes("console -s\n", 'ascii'))
-        # result = shell.recv(65535).decode('ascii')
-        # print("SSH Enabled")
-        # # Enable HTTPS
-        # shell.send(bytes("web -s enable\n", 'ascii'))
-        # result = shell.recv(65535).decode('ascii')
-        # print("HTTPS Enabled")
-
-        # # Primary NTP Server
-        # shell.send(bytes("ntp -p ntp.internal.salesforce.com\n", 'ascii'))
-        # result = shell.recv(65535).decode('ascii')
-        # print("Primary NTP Server configured")
-        # # Secondary NTP Server
-        # shell.send(bytes("ntp -s phx-ntp.internal.salesforce.com\n", 'ascii'))
-        # result = shell.recv(65535).decode('ascii')
-        # print("Secondary NTP Server configured")
-
-        # # Timezone by default GMT - Same time is displayed in UTC
-
-        # # Add an admin user
-        # shell.send(
-        #     bytes("user -n admin -pw Ups#123! -pe Administrator -e enable\n", 'ascii'))
-        # result = shell.recv(65535).decode('ascii')
-        # print("Admin user created")
-        
 except Exception as e:
     print("Something went wrong: " + str(e))
