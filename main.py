@@ -21,12 +21,12 @@ class UPSConfig:
         self.shell = self.client.invoke_shell()
 
     def FTP_config(self):
-        self.shell.send(bytes("ftp -S disabled\n", 'ascii'))
+        self.shell.send(bytes("ftp -S disable\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
         print("FTP Disabled")
 
     def NTP_config(self):
-        self.shell.send(bytes("ntp -OM enabled\n", 'ascii'))
+        self.shell.send(bytes("ntp -OM enable\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
         print("NTP Enabled")
     
