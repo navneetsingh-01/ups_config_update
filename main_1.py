@@ -14,34 +14,39 @@ class UPSConfig:
         for password in passwords:
             try:
                 self.client.connect(ip, username=username, password=password, timeout=10)
+                print("Connected successfully!!")
                 break
             except Exception as e:
                 print(f"Something went wrong, unable to connect to {ip}: {str(e)}")
         self.shell = self.client.invoke_shell()
 
-# def NTP_config():
-#     shell.send(bytes("ftp -S disable\n", 'ascii'))
-#     result = shell.recv(65535).decode('ascii')
-#     print("FTP Disabled")
+    def FTP_config(self):
+        self.shell.send(bytes("ftp -S enable\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("FTP Enabled")
 
-# def FTP_config():
-#     # Disable FTP
-#     shell.send(bytes("ftp -S disable\n", 'ascii'))
-#     result = shell.recv(65535).decode('ascii')
-#     print("FTP Disabled")
+    def NTP_config(self):
+        self.shell.send(bytes("ntp -OM disable\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("NTP Disabled")
+
+    def reboot(self):
+        self.shell.send(bytes("reboot\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        self.shell.send(bytes("YES\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("Rebooted successfully")
+
+    def close_connection(self):
+        self.client.close()
 
 try:
-    # CSV file path
     csv_file = 'devices_test.csv'
-
-    # Read data from CSV
     data = read_csv(csv_file)
+
     for item in data:
         host = item["host"]
         ip = item["ip"]
-
-        command = "help"
-
         username = "apc"
         password1 = "P@ss4apc"
         password2 = "apc"
@@ -49,9 +54,15 @@ try:
         if host is None or ip is None:
             continue
 
-
         config = UPSConfig(ip, username, [password2, password1])
+        configurations = [config.FTP_config, config.NTP_config, config.reboot]
+        for ups_config in configurations:
+            try: 
+                ups_config()
+            except Exception as e:
+                print(f"Something went wrong while executing {ups_config.__name__}: " + str(e))
 
+        config.close_connection()
 
         # client = paramiko.client.SSHClient()
         # client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -102,13 +113,6 @@ try:
         #     bytes("user -n admin -pw Ups#123! -pe Administrator -e enable\n", 'ascii'))
         # result = shell.recv(65535).decode('ascii')
         # print("Admin user created")
-
-        # # Reboot
-        # shell.send(bytes("reboot\n", 'ascii'))
-        # result = shell.recv(65535).decode('ascii')
-        # shell.send(bytes("YES\n", 'ascii'))
-        # result = shell.recv(65535).decode('ascii')
-        # print("Rebooted successfully\n######################")
-        # client.close()
+        
 except Exception as e:
     print("Something went wrong: " + str(e))
