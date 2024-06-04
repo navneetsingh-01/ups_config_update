@@ -35,7 +35,7 @@ class UPSConfig:
         result = self.shell.recv(65535).decode('ascii')
         self.shell.send(bytes("YES\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
-        print("Rebooted successfully")
+        print("Rebooted successfully\n###############")
 
     def close_connection(self):
         self.client.close()
