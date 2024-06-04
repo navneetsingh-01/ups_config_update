@@ -8,10 +8,15 @@ def read_csv(file_path):
     return data
 
 class UPSConfig:
-    def __init__(self, ip, username, password):
+    def __init__(self, ip, username, passwords):
         self.client = paramiko.client.SSHClient()
         self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self.client.connect(ip, username=username, password=password, timeout=10)
+        for password in passwords:
+            try:
+                self.client.connect(ip, username=username, password=password, timeout=10)
+                break
+            except Exception as e:
+                print(f"Something went wrong, unable to connect to {ip}: {str(e)}")
         self.shell = self.client.invoke_shell()
 
 # def NTP_config():
@@ -44,10 +49,8 @@ try:
         if host is None or ip is None:
             continue
 
-        try: 
-            config = UPSConfig(ip, username, password2)
-        except Exception as e:
-            print(f"Something went wrong, unable to connect to {host}: {str(e)}")
+
+        config = UPSConfig(ip, username, [password2, password1])
 
 
         # client = paramiko.client.SSHClient()
