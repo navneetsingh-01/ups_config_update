@@ -14,21 +14,21 @@ class UPSConfig:
         for password in passwords:
             try:
                 self.client.connect(ip, username=username, password=password, timeout=10)
-                print("Connected successfully!!")
+                print(f"Connected successfully!!")
                 break
             except Exception as e:
                 print(f"Something went wrong, unable to connect to {ip}: {str(e)}")
         self.shell = self.client.invoke_shell()
 
     def FTP_config(self):
-        self.shell.send(bytes("ftp -S enable\n", 'ascii'))
+        self.shell.send(bytes("ftp -S disabled\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
-        print("FTP Enabled")
+        print("FTP Disabled")
 
     def NTP_config(self):
-        self.shell.send(bytes("ntp -OM disable\n", 'ascii'))
+        self.shell.send(bytes("ntp -OM enabled\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
-        print("NTP Disabled")
+        print("NTP Enabled")
 
     def reboot(self):
         self.shell.send(bytes("reboot\n", 'ascii'))
@@ -54,7 +54,8 @@ try:
         if host is None or ip is None:
             continue
 
-        config = UPSConfig(ip, username, [password2, password1])
+        print("\n\n########## Configuring device: " + host + " - " + ip)
+        config = UPSConfig(ip, username, [password1, password2])
         configurations = [config.FTP_config, config.NTP_config, config.reboot]
         for ups_config in configurations:
             try: 
@@ -81,7 +82,7 @@ try:
         # shell = client.invoke_shell()
         # result = shell.recv(65535).decode('ascii')
 
-        # print("\n\n########## Configuring device: " + host)
+       
         # print(host, ip)
        
         # # Disable HTTP
