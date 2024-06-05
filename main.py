@@ -1,11 +1,13 @@
 import csv
 import paramiko
 
+
 def read_csv(file_path):
     with open(file_path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         data = [row for row in reader]
     return data
+
 
 class UPSConfig:
     def __init__(self, ip, username, passwords):
@@ -13,11 +15,13 @@ class UPSConfig:
         self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         for password in passwords:
             try:
-                self.client.connect(ip, username=username, password=password, timeout=10)
+                self.client.connect(ip, username=username,
+                                    password=password, timeout=10)
                 print(f"Connected successfully!!")
                 break
             except Exception as e:
-                print(f"Something went wrong, unable to connect to {ip}: {str(e)}")
+                print(
+                    f"Something went wrong, unable to connect to {ip}: {str(e)}")
         self.shell = self.client.invoke_shell()
 
     def FTP_config(self):
@@ -29,7 +33,7 @@ class UPSConfig:
         self.shell.send(bytes("ntp -OM enable\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
         print("NTP Enabled")
-    
+
     def HTTP_config(self):
         self.shell.send(bytes("web -h disable\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
@@ -51,12 +55,14 @@ class UPSConfig:
         print("Primary NTP Server configured")
 
     def NTP_secondary_server_config(self):
-        self.shell.send(bytes("ntp -s phx-ntp.internal.salesforce.com\n", 'ascii'))
+        self.shell.send(
+            bytes("ntp -s phx-ntp.internal.salesforce.com\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
         print("Secondary NTP Server configured")
 
     def create_user(self):
-        self.shell.send(bytes("user -n admin -pw Ups#123! -pe Administrator -e enable\n", 'ascii'))
+        self.shell.send(
+            bytes("user -n admin -pw Ups#123! -pe Administrator -e enable\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
         print("Admin user created")
 
@@ -85,6 +91,7 @@ class UPSConfig:
     def close_connection(self):
         self.client.close()
 
+
 try:
     csv_file = 'devices_test.csv'
     data = read_csv(csv_file)
@@ -102,14 +109,17 @@ try:
         print("\n\n########## Configuring device: " + host + " - " + ip)
         config = UPSConfig(ip, username, [password1, password2])
         configurations = [
-            config.FTP_config, 
+            config.NTP_config,
+            config.NTP_primary_server_config,
+            config.NTP_secondary_server_config,
             config.reboot
         ]
         for ups_config in configurations:
-            try: 
+            try:
                 ups_config()
             except Exception as e:
-                print(f"Something went wrong while executing {ups_config.__name__}: " + str(e))
+                print(
+                    f"Something went wrong while executing {ups_config.__name__}: " + str(e))
 
         config.close_connection()
 except Exception as e:
