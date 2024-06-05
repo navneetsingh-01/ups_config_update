@@ -32,6 +32,7 @@ class UPSConfig:
     def NTP_config(self):
         self.shell.send(bytes("ntp -OM enable\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
+        print(result)
         print("NTP Enabled")
 
     def HTTP_config(self):
@@ -109,9 +110,9 @@ try:
         print("\n\n########## Configuring device: " + host + " - " + ip)
         config = UPSConfig(ip, username, [password1, password2])
         configurations = [
-            config.NTP_config,
             config.NTP_primary_server_config,
             config.NTP_secondary_server_config,
+            config.NTP_config,
             config.reboot
         ]
         for ups_config in configurations:
