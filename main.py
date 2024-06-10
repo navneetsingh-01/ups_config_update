@@ -98,7 +98,7 @@ class UPSConfig:
 
 
 try:
-    csv_file = 'devices_test.csv'
+    csv_file = 'devices.csv'
     data = read_csv(csv_file)
 
     for item in data:
