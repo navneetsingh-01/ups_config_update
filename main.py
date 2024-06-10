@@ -97,14 +97,44 @@ class UPSConfig:
     def close_connection(self):
         self.client.close()
 
+    def radius_config(self):
+        self.shell.send(bytes("radius -a radiusLocal\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("Enable RADIUS and local authentication")
+
     def radius_primary_server_config(self):
-        self.shell.send(bytes("\n", 'ascii'))
+        self.shell.send(bytes("radius -p1 ash-ipn-c\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
         print("Radius primary server configured")
 
+    def radius_secondary_server_config(self):
+        self.shell.send(bytes("radius -p2 bom1-ipn-a\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("Radius secondary server configured")
+
+    def radius_primary_server_timeout(self):
+        self.shell.send(bytes("radius -t1 30\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("Radius primary server timeout configured")
+
+    def radius_secondary_server_timeout(self):
+        self.shell.send(bytes("radius -t2 30\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("Radius secondary server timeout configured")
+
+    def radius_primary_server_secret(self):
+        self.shell.send(bytes("radius -s1 $H@redKEy@Cs3\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("Radius primary server secret configured")
+
+    def radius_secondary_server_secret(self):
+        self.shell.send(bytes("radius -s2 $H@redKEy@Cs3\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("Radius secondary server secret configured")
+
 
 try:
-    csv_file = 'devices.csv'
+    csv_file = 'devices_test.csv'
     data = read_csv(csv_file)
 
     for item in data:
@@ -124,11 +154,13 @@ try:
             print("Unable to connect: " + str(e))
             continue
         configurations = [
-            config.NTP_primary_server_config,
-            config.NTP_secondary_server_config,
-            config.NTP_OM_config,
-            config.NTP_config,
-            config.setup_timezone,
+            config.radius_primary_server_config, 
+            config.radius_secondary_server_config, 
+            config.radius_primary_server_timeout, 
+            config.radius_secondary_server_timeout, 
+            config.radius_primary_server_secret, 
+            config.radius_secondary_server_secret,
+            config.radius_config,
             config.reboot,
         ]
         for ups_config in configurations:
