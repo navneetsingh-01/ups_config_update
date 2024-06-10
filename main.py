@@ -29,10 +29,14 @@ class UPSConfig:
         result = self.shell.recv(65535).decode('ascii')
         print("FTP Disabled")
 
-    def NTP_config(self):
+    def NTP_OM_config(self):
         self.shell.send(bytes("ntp -OM enable\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
-        print(result)
+        print("NTP Override Manual Option Enabled")
+
+    def NTP_config(self):
+        self.shell.send(bytes("ntp -e enable\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
         print("NTP Enabled")
 
     def HTTP_config(self):
@@ -57,7 +61,7 @@ class UPSConfig:
 
     def NTP_secondary_server_config(self):
         self.shell.send(
-            bytes("ntp -s phx-ntp.internal.salesforce.com\n", 'ascii'))
+            bytes("ntp -s \n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
         print("Secondary NTP Server configured")
 
@@ -112,8 +116,10 @@ try:
         configurations = [
             config.NTP_primary_server_config,
             config.NTP_secondary_server_config,
+            config.NTP_OM_config,
             config.NTP_config,
-            config.reboot
+            config.setup_timezone,
+            config.reboot,
         ]
         for ups_config in configurations:
             try:
@@ -125,3 +131,13 @@ try:
         config.close_connection()
 except Exception as e:
     print("Something went wrong: " + str(e))
+
+'''
+timezone 0 
+ntp -e enable
+servers 
+local + radius
+t1 = t2 = 30
+$H@redKEy@Cs36
+$H@redKEy@Cs36
+'''
