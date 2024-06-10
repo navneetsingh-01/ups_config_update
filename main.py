@@ -22,12 +22,8 @@ class UPSConfig:
             except Exception as e:
                 print(
                     f"Something went wrong, unable to connect to {ip}: {str(e)}")
-        print(self.client)
-        print("HERE")
-        if self.client is not None:
-            self.shell = self.client.invoke_shell()
-        else:
-            return None
+
+        self.shell = self.client.invoke_shell()
 
     def FTP_config(self):
         self.shell.send(bytes("ftp -S disable\n", 'ascii'))
@@ -122,8 +118,10 @@ try:
             continue
 
         print("\n\n########## Configuring device: " + host + " - " + ip)
-        config = UPSConfig(ip, username, [password1, password2])
-        if config is None:
+        try:
+            config = UPSConfig(ip, username, [password1, password2])
+        except Exception as e:
+            print("Unable to connect: " + str(e))
             continue
         configurations = [
             config.NTP_primary_server_config,
