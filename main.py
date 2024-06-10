@@ -22,6 +22,8 @@ class UPSConfig:
             except Exception as e:
                 print(
                     f"Something went wrong, unable to connect to {ip}: {str(e)}")
+        print(self.client)
+        print("HERE")
         if self.client is not None:
             self.shell = self.client.invoke_shell()
         else:
@@ -100,9 +102,9 @@ class UPSConfig:
         self.client.close()
 
     def radius_primary_server_config(self):
-        self.shell.send(bytes("user -n admin -e disable\n", 'ascii'))
+        self.shell.send(bytes("\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
-        print("Admin user disabled")
+        print("Radius primary server configured")
 
 
 try:
