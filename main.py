@@ -22,7 +22,10 @@ class UPSConfig:
             except Exception as e:
                 print(
                     f"Something went wrong, unable to connect to {ip}: {str(e)}")
-        self.shell = self.client.invoke_shell()
+        if self.client is not None:
+            self.shell = self.client.invoke_shell()
+        else:
+            return None
 
     def FTP_config(self):
         self.shell.send(bytes("ftp -S disable\n", 'ascii'))
@@ -96,6 +99,11 @@ class UPSConfig:
     def close_connection(self):
         self.client.close()
 
+    def radius_primary_server_config(self):
+        self.shell.send(bytes("user -n admin -e disable\n", 'ascii'))
+        result = self.shell.recv(65535).decode('ascii')
+        print("Admin user disabled")
+
 
 try:
     csv_file = 'devices.csv'
@@ -113,6 +121,8 @@ try:
 
         print("\n\n########## Configuring device: " + host + " - " + ip)
         config = UPSConfig(ip, username, [password1, password2])
+        if config is None:
+            continue
         configurations = [
             config.NTP_primary_server_config,
             config.NTP_secondary_server_config,
