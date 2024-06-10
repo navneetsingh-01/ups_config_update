@@ -61,7 +61,7 @@ class UPSConfig:
 
     def NTP_secondary_server_config(self):
         self.shell.send(
-            bytes("ntp -s \n", 'ascii'))
+            bytes("ntp -s ntp.internal.salesforce.com\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
         print("Secondary NTP Server configured")
 
