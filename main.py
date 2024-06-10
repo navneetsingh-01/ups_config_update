@@ -103,12 +103,12 @@ class UPSConfig:
         print("Enable RADIUS and local authentication")
 
     def radius_primary_server_config(self):
-        self.shell.send(bytes("radius -p1 ash-ipn-c\n", 'ascii'))
+        self.shell.send(bytes("radius -p1 10.15.64.29\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
         print("Radius primary server configured")
 
     def radius_secondary_server_config(self):
-        self.shell.send(bytes("radius -p2 bom1-ipn-a\n", 'ascii'))
+        self.shell.send(bytes("radius -p2 10.192.64.27\n", 'ascii'))
         result = self.shell.recv(65535).decode('ascii')
         print("Radius secondary server configured")
 
@@ -155,10 +155,10 @@ try:
             continue
         configurations = [
             config.radius_primary_server_config, 
-            config.radius_secondary_server_config, 
             config.radius_primary_server_timeout, 
-            config.radius_secondary_server_timeout, 
             config.radius_primary_server_secret, 
+            config.radius_secondary_server_config, 
+            config.radius_secondary_server_timeout, 
             config.radius_secondary_server_secret,
             config.radius_config,
             config.reboot,
