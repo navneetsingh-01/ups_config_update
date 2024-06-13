@@ -154,11 +154,11 @@ try:
             print("Unable to connect: " + str(e))
             continue
         configurations = [
-            config.radius_primary_server_config, 
-            config.radius_primary_server_timeout, 
-            config.radius_primary_server_secret, 
-            config.radius_secondary_server_config, 
-            config.radius_secondary_server_timeout, 
+            config.radius_primary_server_config,
+            config.radius_primary_server_timeout,
+            config.radius_primary_server_secret,
+            config.radius_secondary_server_config,
+            config.radius_secondary_server_timeout,
             config.radius_secondary_server_secret,
             config.radius_config,
             config.reboot,
@@ -173,13 +173,3 @@ try:
         config.close_connection()
 except Exception as e:
     print("Something went wrong: " + str(e))
-
-'''
-timezone 0 
-ntp -e enable
-servers 
-local + radius
-t1 = t2 = 30
-$H@redKEy@Cs36
-$H@redKEy@Cs36
-'''
