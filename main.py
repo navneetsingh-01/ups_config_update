@@ -154,6 +154,16 @@ try:
             print("Unable to connect: " + str(e))
             continue
         configurations = [
+            config.FTP_config,
+            config.NTP_OM_config,
+            config.NTP_config,
+            config.HTTP_config,
+            config.SSH_config,
+            config.HTTPS_config,
+            config.NTP_primary_server_config,
+            config.NTP_secondary_server_config,
+            config.setup_timezone,
+            config.change_su_password,
             config.radius_primary_server_config,
             config.radius_primary_server_timeout,
             config.radius_primary_server_secret,
@@ -161,7 +171,7 @@ try:
             config.radius_secondary_server_timeout,
             config.radius_secondary_server_secret,
             config.radius_config,
-            config.reboot,
+            config.reboot
         ]
         for ups_config in configurations:
             try:
