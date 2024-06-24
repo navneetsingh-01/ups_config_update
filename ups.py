@@ -1,5 +1,7 @@
 import os
 import paramiko
+from dotenv import load_dotenv
+load_dotenv()
 
 class UPSConfig:
     def __init__(self, ip, username, passwords):
