@@ -16,6 +16,8 @@ try:
         host = item["ups_name"]
         ip = item["ups_ip"]
         newrelic_ip = item["snmp_ip"]
+        eco_ip1=item['eco_ip1']
+        eco_ip2=item['eco_ip2']
         username = "apc"
         password1 = "P@ss4apc"
         password2 = "apc"
@@ -38,7 +40,7 @@ try:
         for ups_config in configurations:
             try:
                 if ups_config.__name__ in params_required:
-                    ups_config(newrelic_ip)
+                    ups_config(newrelic_ip, eco_ip1, eco_ip2)
                 else:
                     ups_config()
             except Exception as e:
