@@ -1,5 +1,5 @@
 import csv
-from .ups import UPSConfig
+from ups import UPSConfig
 
 
 def read_csv(file_path):
