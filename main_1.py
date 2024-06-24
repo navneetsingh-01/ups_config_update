@@ -32,7 +32,7 @@ try:
             print("Unable to connect: " + str(e))
             continue
         configurations = [
-            config.snmp_newrelic,
+            # config.snmp_newrelic,
             config.snmp_acl_config,
             config.reboot
         ]
