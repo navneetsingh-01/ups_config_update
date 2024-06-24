@@ -1,7 +1,6 @@
 import os
 import paramiko
 
-
 class UPSConfig:
     def __init__(self, ip, username, passwords):
         self.client = paramiko.client.SSHClient()

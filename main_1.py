@@ -49,4 +49,7 @@
 # except Exception as e:
 #     print("Something went wrong: " + str(e))
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 print(os.getenv("SU_USERNAME"))
