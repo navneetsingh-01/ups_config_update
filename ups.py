@@ -139,7 +139,7 @@ class UPSConfig:
 
     def snmp_acl_config(self):
         self.shell.send(bytes("snmpv3 -ac1 enable\n", 'ascii'))
-        result = self.shell.recv(65535).decode('ascii')
+        result = self.shell.recv(10000000).decode('ascii')
         print(result)
         if "Success" in result:
             print("SNMP ACL enabled")
@@ -149,7 +149,7 @@ class UPSConfig:
     def snmp_newrelic(self, newrelic_ip):
         cmd = f"snmpv3 -n1 {newrelic_ip}\n"
         self.shell.send(bytes(cmd, 'ascii'))
-        result = self.shell.recv(65535).decode('ascii')
+        result = self.shell.recv(10000000).decode('ascii')
         print(result)
         if "Success" in result:
             print("NewRelic IP configured")
