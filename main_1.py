@@ -14,6 +14,7 @@ try:
     data = read_csv(csv_file)
 
     for item in data:
+        host = None
         if 'ups_name' in item.keys():
             host = item['ups_name']
         ip = item["ups_ip"]
