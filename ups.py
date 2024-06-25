@@ -31,6 +31,7 @@ class UPSConfig:
                 print(
                     f"Something went wrong, unable to connect to {ip}: {str(e)}")
         self.shell = self.client.invoke_shell()
+        output = self.shell.recv(1000)
 
     def FTP_config(self):
         self.shell.send(bytes("ftp -S disable\n", 'ascii'))
