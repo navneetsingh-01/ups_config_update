@@ -143,33 +143,40 @@ class UPSConfig:
 
     def snmp_acl_config(self):
         self.shell.send(bytes("snmpv3 -ac1 enable\n", 'ascii'))
+        time.sleep(120)
         result = self.shell.recv(10000000).decode('ascii')
         print("SNMP AC1 enabled")
 
         self.shell.send(bytes("snmpv3 -ac2 enable\n", 'ascii'))
+        time.sleep(120)
         result = self.shell.recv(10000000).decode('ascii')
         print("SNMP AC2 enabled")
 
         self.shell.send(bytes("snmpv3 -ac3 enable\n", 'ascii'))
+        time.sleep(120)
         result = self.shell.recv(10000000).decode('ascii')
         print("SNMP AC3 enabled")
 
     def snmp_access_users(self):
         self.shell.send(bytes("snmpv3 -au1 itsremon\n", 'ascii'))
+        time.sleep(120)
         result = self.shell.recv(10000000).decode('ascii')
         print("AU1 configured")
 
         self.shell.send(bytes("snmpv3 -au2 itsremon\n", 'ascii'))
+        time.sleep(120)
         result = self.shell.recv(10000000).decode('ascii')
         print("AU2 configured")
 
         self.shell.send(bytes("snmpv3 -au3 itsremon\n", 'ascii'))
+        time.sleep(120)
         result = self.shell.recv(10000000).decode('ascii')
         print("AU3 configured")
 
     def snmp_access_ips(self, newrelic_ip):
         cmd = f"snmpv3 -n1 {newrelic_ip}\n"
         self.shell.send(bytes(cmd, 'ascii'))
+        time.sleep(120)
         result = self.shell.recv(10000000).decode('ascii')
         print("NewRelic IP configured")
 
@@ -178,10 +185,12 @@ class UPSConfig:
 
         cmd = f"snmpv3 -n2 {eco_ip1}\n"
         self.shell.send(bytes(cmd, 'ascii'))
+        time.sleep(120)
         result = self.shell.recv(10000000).decode('ascii')
         print("N2 IP configured")
 
         cmd = f"snmpv3 -n3 {eco_ip2}\n"
         self.shell.send(bytes(cmd, 'ascii'))
+        time.sleep(120)
         result = self.shell.recv(10000000).decode('ascii')
         print("N3 IP configured")
