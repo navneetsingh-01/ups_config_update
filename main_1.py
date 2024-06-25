@@ -12,7 +12,6 @@ def read_csv(file_path):
 try:
     csv_file = 'devices_test.csv'
     data = read_csv(csv_file)
-    print(data)
 
     for item in data:
         if 'ups_name' in item.keys():
