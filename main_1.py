@@ -37,9 +37,9 @@ try:
             continue
         configurations = [
             config.snmp_access_ips,
-            # config.snmp_access_users,
-            # config.snmp_acl_config,
-            # config.reboot
+            config.snmp_access_users,
+            config.snmp_acl_config,
+            config.reboot
         ]
         params_required = ["snmp_access_ips"]
         for ups_config in configurations:
