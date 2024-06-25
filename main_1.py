@@ -23,7 +23,7 @@ try:
         password1 = "P@ss4apc"
         password2 = "apc"
 
-        if host is None or ip is None:
+        if ip is None:
             continue
 
         if host is not None:
