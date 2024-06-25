@@ -142,46 +142,49 @@ class UPSConfig:
         print("Radius secondary server secret configured")
 
     def snmp_acl_config(self):
-        self.shell.send(bytes("snmpv3 -ac1 enable\n", 'ascii'))
+        self.shell.exec_command(bytes("snmpv3 -ac1 enable\n", 'ascii'))
         result = self.shell.recv(10000000).decode('ascii')
         print("SNMP AC1 enabled")
 
-        self.shell.send(bytes("snmpv3 -ac2 enable\n", 'ascii'))
+        self.shell.exec_command(bytes("snmpv3 -ac2 enable\n", 'ascii'))
         result = self.shell.recv(10000000).decode('ascii')
         print("SNMP AC2 enabled")
 
-        self.shell.send(bytes("snmpv3 -ac3 enable\n", 'ascii'))
+        self.shell.exec_command(bytes("snmpv3 -ac3 enable\n", 'ascii'))
         result = self.shell.recv(10000000).decode('ascii')
         print("SNMP AC3 enabled")
 
     def snmp_access_users(self):
-        self.shell.send(bytes("snmpv3 -au1 itsremon\n", 'ascii'))
+        self.shell.exec_command(bytes("snmpv3 -au1 itsremon\n", 'ascii'))
         result = self.shell.recv(10000000).decode('ascii')
         print("AU1 configured")
 
-        self.shell.send(bytes("snmpv3 -au2 itsremon\n", 'ascii'))
+        self.shell.exec_command(bytes("snmpv3 -au2 itsremon\n", 'ascii'))
         result = self.shell.recv(10000000).decode('ascii')
         print("AU2 configured")
 
-        self.shell.send(bytes("snmpv3 -au3 itsremon\n", 'ascii'))
+        self.shell.exec_command(bytes("snmpv3 -au3 itsremon\n", 'ascii'))
         result = self.shell.recv(10000000).decode('ascii')
         print("AU3 configured")
 
     def snmp_access_ips(self, newrelic_ip):
         cmd = f"snmpv3 -n1 {newrelic_ip}\n"
-        self.shell.send(bytes(cmd, 'ascii'))
-        result = self.shell.recv(10000000).decode('ascii')
+        stdin, stdout, stderr = self.shell.exec_command(bytes(cmd, 'ascii'))
+        # result = self.shell.recv(10000000).decode('ascii')
+        print(stdin, stdout, stderr)
         print("NewRelic IP configured")
 
         eco_ip1 = "10.15.96.101"
         eco_ip2 = "10.192.100.37"
 
         cmd = f"snmpv3 -n2 {eco_ip1}\n"
-        self.shell.send(bytes(cmd, 'ascii'))
-        result = self.shell.recv(10000000).decode('ascii')
+        stdin, stdout, stderr = self.shell.exec_command(bytes(cmd, 'ascii'))
+        print(stdin, stdout, stderr)
+        # result = self.shell.recv(10000000).decode('ascii')
         print("N2 IP configured")
 
         cmd = f"snmpv3 -n3 {eco_ip2}\n"
-        self.shell.send(bytes(cmd, 'ascii'))
-        result = self.shell.recv(10000000).decode('ascii')
+        stdin, stdout, stderr = self.shell.exec_command(bytes(cmd, 'ascii'))
+        print(stdin, stdout, stderr)
+        # result = self.shell.recv(10000000).decode('ascii')
         print("N3 IP configured")

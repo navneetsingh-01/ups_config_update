@@ -37,8 +37,8 @@ try:
             continue
         configurations = [
             config.snmp_access_ips,
-            config.snmp_access_users,
-            config.snmp_acl_config,
+            # config.snmp_access_users,
+            # config.snmp_acl_config,
             config.reboot
         ]
         params_required = ["snmp_access_ips"]
