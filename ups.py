@@ -3,6 +3,7 @@ import paramiko
 from dotenv import load_dotenv
 load_dotenv()
 
+
 class UPSConfig:
     def __init__(self, ip, username, passwords):
         self.client = paramiko.client.SSHClient()
@@ -151,18 +152,37 @@ class UPSConfig:
         result = self.shell.recv(10000000).decode('ascii')
         print("SNMP AC3 enabled")
 
-    def snmp_newrelic(self, newrelic_ip, eco_ip1, eco_ip2):
+    def snmp_access_users(self):
+        self.shell.send(bytes("snmpv3 -au1 itsremon\n", 'ascii'))
+        result = self.shell.recv(10000000).decode('ascii')
+        print("AU1 configured")
+
+        self.shell.send(bytes("snmpv3 -au2 itsremon\n", 'ascii'))
+        result = self.shell.recv(10000000).decode('ascii')
+        print("AU2 configured")
+
+        self.shell.send(bytes("snmpv3 -au3 itsremon\n", 'ascii'))
+        result = self.shell.recv(10000000).decode('ascii')
+        print("AU3 configured")
+
+    def snmp_access_ips(self, newrelic_ip):
         cmd = f"snmpv3 -n1 {newrelic_ip}\n"
         self.shell.send(bytes(cmd, 'ascii'))
         result = self.shell.recv(10000000).decode('ascii')
         print("NewRelic IP configured")
+        print(result)
+
+        eco_ip1 = "10.15.96.101"
+        eco_ip2 = "10.192.100.37"
 
         cmd = f"snmpv3 -n2 {eco_ip1}\n"
         self.shell.send(bytes(cmd, 'ascii'))
         result = self.shell.recv(10000000).decode('ascii')
         print("N2 IP configured")
+        print(result)
 
         cmd = f"snmpv3 -n3 {eco_ip2}\n"
         self.shell.send(bytes(cmd, 'ascii'))
         result = self.shell.recv(10000000).decode('ascii')
         print("N3 IP configured")
+        print(result)
