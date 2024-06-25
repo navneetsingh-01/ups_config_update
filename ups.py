@@ -170,14 +170,7 @@ class UPSConfig:
     def snmp_access_ips(self, newrelic_ip):
         cmd = f"snmpv3 -n1 {newrelic_ip}\n"
         self.shell.send(bytes(cmd, 'ascii'))
-        buffer = 20
-        while not self.shell.recv_ready() and buffer:
-            print("NOT READY - recv_ready: " +
-                    str(self.shell.recv_ready()) + "\n")
-            time.sleep(1)
-            buffer -= 1
         result = self.shell.recv(10000000).decode('ascii')
-        print(result)
         print("NewRelic IP configured")
 
         eco_ip1 = "10.15.96.101"
@@ -185,24 +178,10 @@ class UPSConfig:
 
         cmd = f"snmpv3 -n2 {eco_ip1}\n"
         self.shell.send(bytes(cmd, 'ascii'))
-        buffer = 20
-        while not self.shell.recv_ready() and buffer:
-            print("NOT READY - recv_ready: " +
-                    str(self.shell.recv_ready()) + "\n")
-            time.sleep(1)
-            buffer -= 1
         result = self.shell.recv(10000000).decode('ascii')
-        print(result)
         print("N2 IP configured")
 
         cmd = f"snmpv3 -n3 {eco_ip2}\n"
         self.shell.send(bytes(cmd, 'ascii'))
-        buffer = 20
-        while not self.shell.recv_ready() and buffer:
-            print("NOT READY - recv_ready: " +
-                    str(self.shell.recv_ready()) + "\n")
-            time.sleep(1)
-            buffer -= 1
         result = self.shell.recv(10000000).decode('ascii')
-        print(result)
         print("N3 IP configured")
