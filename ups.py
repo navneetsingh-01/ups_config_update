@@ -1,5 +1,6 @@
 import os
 import paramiko
+import time
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -169,6 +170,7 @@ class UPSConfig:
     def snmp_access_ips(self, newrelic_ip):
         cmd = f"snmpv3 -n1 {newrelic_ip}\n"
         self.shell.send(bytes(cmd, 'ascii'))
+        time.sleep(1)
         result = self.shell.recv(10000000).decode('ascii')
         print("NewRelic IP configured")
         print(result)
@@ -178,12 +180,14 @@ class UPSConfig:
 
         cmd = f"snmpv3 -n2 {eco_ip1}\n"
         self.shell.send(bytes(cmd, 'ascii'))
+        time.sleep(1)
         result = self.shell.recv(10000000).decode('ascii')
         print("N2 IP configured")
         print(result)
 
         cmd = f"snmpv3 -n3 {eco_ip2}\n"
         self.shell.send(bytes(cmd, 'ascii'))
+        time.sleep(1)
         result = self.shell.recv(10000000).decode('ascii')
         print("N3 IP configured")
         print(result)
