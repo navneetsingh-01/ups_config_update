@@ -35,7 +35,8 @@ try:
             print("Unable to connect: " + str(e))
             continue
         configurations = [
-
+            config.snmp_eco_ip1,
+            config.snmp_eco_ip2,
             config.reboot
         ]
         for ups_config in configurations:
