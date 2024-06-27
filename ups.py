@@ -195,14 +195,34 @@ class UPSConfig:
         result = self.shell.recv(10000000).decode('ascii')
         print("N3 IP configured")
 
+    def snmp_eco_ip1(self):
+        self.shell.send(bytes("snmpv3 -n2 10.15.96.101 -au2 itsremon -ac2 enable\n", 'ascii'))
+        time.sleep(60)
+        result = self.shell.recv(10000000).decode('ascii')
+        print("N2 IP configured")
+
+    def snmp_eco_ip2(self):
+        self.shell.send(bytes("snmpv3 -n3 10.192.100.37 -au3 itsremon -ac3 enable\n", 'ascii'))
+        time.sleep(60)
+        result = self.shell.recv(10000000).decode('ascii')
+        print("N2 IP configured")
+
+
+
     def create_test_profile(self):
-        self.shell.send(bytes("snmpv3 -u2 Test -ap2 sha thisisonlyatest -pp2 aes thisisonlyatest\n", 'ascii'))
+        self.shell.send(bytes("snmpv3 -u2 Test -ap2 sha thisisonlyatest\n", 'ascii'))
         time.sleep(60)
         result = self.shell.recv(10000000).decode('ascii')
         print("Test profile created")
+
+        self.shell.send(bytes("snmpv3 -pp2 aes thisisonlyatest\n", 'ascii'))
+        time.sleep(60)
+        result = self.shell.recv(10000000).decode('ascii')
+        print("AES enable for test profile")
+
     
     def enable_test_profile(self):
         self.shell.send(bytes("snmpv3 -ac4 enable -au4 Test -n4 10.15.96.101\n", 'ascii'))
         time.sleep(60)
         result = self.shell.recv(10000000).decode('ascii')
-        print("Test profile created")
+        print("Test profile enabled")
