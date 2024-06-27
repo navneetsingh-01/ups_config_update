@@ -205,7 +205,7 @@ class UPSConfig:
         self.shell.send(bytes("snmpv3 -n3 10.192.100.37 -au3 itsremon -ac3 enable\n", 'ascii'))
         time.sleep(60)
         result = self.shell.recv(10000000).decode('ascii')
-        print("N2 IP configured")
+        print("N3 IP configured")
 
 
 
