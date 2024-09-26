@@ -18,9 +18,9 @@ try:
         if 'ups_name' in item.keys():
             host = item['ups_name']
         ip = item["ups_ip"]
-        username = "apc"
-        password1 = "P@ss4apc"
-        password2 = "apc"
+        username = ""
+        password1 = ""
+        password2 = ""
 
         if ip is None:
             continue

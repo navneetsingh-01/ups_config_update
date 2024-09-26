@@ -19,9 +19,9 @@ try:
             host = item['ups_name']
         ip = item["ups_ip"]
         newrelic_ip = item["snmp_ip"]
-        username = "apc"
-        password1 = "P@ss4apc"
-        password2 = "apc"
+        username = ""
+        password1 = ""
+        password2 = ""
 
         if ip is None:
             continue

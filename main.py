@@ -77,10 +77,6 @@ class UPSConfig:
         result = self.shell.recv(65535).decode('ascii')
         print("Timezone set to UTC")
 
-    def change_su_password(self):
-        self.shell.send(bytes("user -n apc -cp apc -pw P@ss4apc\n", 'ascii'))
-        result = self.shell.recv(65535).decode('ascii')
-        print("SU password updated")
 
     def user_disable(self):
         self.shell.send(bytes("user -n admin -e disable\n", 'ascii'))
@@ -140,9 +136,9 @@ try:
     for item in data:
         host = item["host"]
         ip = item["ip"]
-        username = "apc"
-        password1 = "P@ss4apc"
-        password2 = "apc"
+        username = ""
+        password1 = ""
+        password2 = ""
 
         if host is None or ip is None:
             continue
